@@ -76,7 +76,7 @@ client.join(null,"any-channel",null, (uid)=>{
     // Stream object associated with your web cam is initialized
     let localStream = AgoraRTC.createStream({
         streamID: uid,
-        audio: false,
+        audio: true,
         video: true,
         screen: false
     });
@@ -107,6 +107,8 @@ client.on('stream-subscribed', function (evt) {
 //When a person is removed from the stream
 client.on('stream-removed',removeVideoStream);
 client.on('peer-leave',removeVideoStream);
+
+// client.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
 
 // // Client Setup
 // // Defines a client for RTC
