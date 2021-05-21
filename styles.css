@@ -1,5 +1,13 @@
 * {
-  font-family: sans-serif;
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+  background-color: #faf3f3;
+}
+
+.navbar {
+  background-color: whitesmoke !important;
 }
 
 .navbar-brand {
@@ -12,35 +20,41 @@
   margin-right: 5%;
 }
 
-.container-fluid-body {
-  height: 90vh;
-  background-color: thistle;
-  margin: 1rem 3rem;
-  display: flex;
+.navbar-brand {
+  background-color: whitesmoke;
 }
 
+.container-fluid-body {
+  height: 90vh;
+  margin: 1rem 3rem;
+  display: flex;
+  border: 2px solid black;
+  border-radius: 10px;
+}
 h1,
 h4 {
   text-align: center;
   margin-top: 1rem;
 }
 #remote-container video {
-  height: auto;
+  max-height: 85vh;
+  max-width: 78vw;
   position: relative !important;
 }
 #me {
   width: 15%;
   height: 25vh;
-  background-color: wheat;
-}
-#me video {
-  position: relative !important;
 }
 #remote-container {
   display: flex;
-  background-color: tomato;
+  flex-direction: row !important;
+  justify-content: center;
   width: 100%;
   margin: 1rem;
+}
+button {
+  margin: 1rem;
+  border: none;
 }
 
 @media only screen and (min-width: 200px) and (max-width: 768px) {

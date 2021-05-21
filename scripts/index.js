@@ -12,10 +12,19 @@ function addVideoStream(elementId) {
   let streamDiv = document.createElement("div");
   // Assigns the elementId to the div.
   streamDiv.id = elementId;
+  //   streamDiv.classList = "col-lg-6";
   // Takes care of the lateral inversion
   streamDiv.style.transform = "rotateY(180deg)";
+
+  const delbtn = streamDiv.createElement("button");
+  delbtn.innerHTML = '<i class="fas fa-trash"></i>';
   // Adds the div to the container.
   remoteContainer.appendChild(streamDiv);
+}
+
+function removeStyleAttribute(elementId) {
+  document.getElementById(`player_${elementId}`).removeAttribute("style");
+  document.getElementById(`video${elementId}`).removeAttribute("style");
 }
 
 // Remove the video stream from the container.
@@ -41,26 +50,39 @@ client.init(
 
 // Join a channel
 client.join(
-  "06feb427bbde4e47a5105694ed767962",
+  "00606feb427bbde4e47a5105694ed767962IAAHhNTRtrCTpl7F2+z7xR5TFOvXCSym8MLfEpcvth5OKEOQEggAAAAAEABpDq0k6vSoYAEAAQDq9Khg",
   "myChannel",
   null,
   (uid) => {
     // Create a local stream
+    let localStream = AgoraRTC.createStream({
+      audio: true,
+      video: true,
+    });
+    // Initialize the local stream
+    localStream.init(() => {
+      // Play the local stream
+      localStream.play("me");
+      // Publish the local stream
+      client.publish(localStream, handleError);
+    }, handleError);
+
+    const muteBtn = document.querySelector(".mute-btn");
+
+    muteBtn.addEventListener("click", function () {
+      console.log(localStream.audio);
+      localStream.audio = !localStream.audio;
+    });
+
+    const endBtn = document.querySelector(".end-btn");
+
+    endBtn.addEventListener("click", function () {
+      console.log(localStream.video);
+      localStream.video = !localStream.video;
+    });
   },
   handleError
 );
-
-let localStream = AgoraRTC.createStream({
-  audio: true,
-  video: true,
-});
-// Initialize the local stream
-localStream.init(() => {
-  // Play the local stream
-  localStream.play("me");
-  // Publish the local stream
-  client.publish(localStream, handleError);
-}, handleError);
 
 // Subscribe to the remote stream when it is published
 client.on("stream-added", function (evt) {
@@ -71,6 +93,7 @@ client.on("stream-subscribed", function (evt) {
   let stream = evt.stream;
   let streamId = String(stream.getId());
   addVideoStream(streamId);
+  //   removeStyleAttribute(streamId);
   stream.play(streamId);
 });
 
