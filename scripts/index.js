@@ -41,7 +41,7 @@ client.init(
 
 // Join a channel
 client.join(
-  "yourToken",
+  "06feb427bbde4e47a5105694ed767962",
   "myChannel",
   null,
   (uid) => {
