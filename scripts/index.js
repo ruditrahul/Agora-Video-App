@@ -15,9 +15,6 @@ function addVideoStream(elementId) {
   //   streamDiv.classList = "col-lg-6";
   // Takes care of the lateral inversion
   streamDiv.style.transform = "rotateY(180deg)";
-
-  const delbtn = streamDiv.createElement("button");
-  delbtn.innerHTML = '<i class="fas fa-trash"></i>';
   // Adds the div to the container.
   remoteContainer.appendChild(streamDiv);
 }
@@ -33,12 +30,29 @@ function removeVideoStream(elementId) {
   if (remoteDiv) remoteDiv.parentNode.removeChild(remoteDiv);
 }
 
-let client = AgoraRTC.createClient({
+var rtc = {
+  // For the local client.
+  client: null,
+  // For the local audio and video tracks.
+  localAudioTrack: null,
+  localVideoTrack: null,
+};
+
+var options = {
+  // Pass your app ID here.
+  appId: "06feb427bbde4e47a5105694ed767962",
+  // Set the channel name.
+  channel: "myChannel",
+  // Pass a token if your project enables the App Certificate.
+  token: null,
+};
+
+rtc.client = AgoraRTC.createClient({
   mode: "rtc",
   codec: "vp8",
 });
 
-client.init(
+rtc.client.init(
   "06feb427bbde4e47a5105694ed767962",
   function () {
     console.log("client initialized");
@@ -49,7 +63,7 @@ client.init(
 );
 
 // Join a channel
-client.join(
+rtc.client.join(
   "00606feb427bbde4e47a5105694ed767962IAAHhNTRtrCTpl7F2+z7xR5TFOvXCSym8MLfEpcvth5OKEOQEggAAAAAEABpDq0k6vSoYAEAAQDq9Khg",
   "myChannel",
   null,
@@ -64,48 +78,55 @@ client.join(
       // Play the local stream
       localStream.play("me");
       // Publish the local stream
-      client.publish(localStream, handleError);
+      rtc.client.publish(localStream, handleError);
     }, handleError);
-
-    const muteBtn = document.querySelector(".mute-btn");
-
-    muteBtn.addEventListener("click", function () {
-      console.log(localStream.audio);
-      localStream.audio = !localStream.audio;
-    });
-
-    const endBtn = document.querySelector(".end-btn");
-
-    endBtn.addEventListener("click", function () {
-      console.log(localStream.video);
-      localStream.video = !localStream.video;
-    });
   },
   handleError
 );
 
+document.querySelector("#mic-btn").addEventListener("click", function () {
+  console.log(rtc.client.localStream);
+  if (document.querySelector("#mic-icon").classList.contains("fa-microphone")) {
+    rtc.localAudioTrack = false;
+    console.log("Muted");
+  }
+});
+
+// function toggleMic() {
+//   if (document.querySelector("#mic-icon").classList.contains("fa-microphone")) {
+//     rtc.localAudioTrack = false;
+//     console.log("Muted.");
+//   } else {
+//     rtc.localAudioTrack = true;
+//     console.log("Unmuted.");
+//   }
+//   document.getElementById("#mic-icon").classList.toggle("fa-microphone-slash");
+// }
+
 // Subscribe to the remote stream when it is published
-client.on("stream-added", function (evt) {
-  client.subscribe(evt.stream, handleError);
+rtc.client.on("stream-added", function (evt) {
+  console.log(evt);
+  rtc.client.subscribe(evt.stream, handleError);
 });
 // Play the remote stream when it is subsribed
-client.on("stream-subscribed", function (evt) {
+rtc.client.on("stream-subscribed", function (evt) {
   let stream = evt.stream;
   let streamId = String(stream.getId());
+
   addVideoStream(streamId);
   //   removeStyleAttribute(streamId);
   stream.play(streamId);
 });
 
 // Remove the corresponding view when a remote user unpublishes.
-client.on("stream-removed", function (evt) {
+rtc.client.on("stream-removed", function (evt) {
   let stream = evt.stream;
   let streamId = String(stream.getId());
   stream.close();
   removeVideoStream(streamId);
 });
 // Remove the corresponding view when a remote user leaves the channel.
-client.on("peer-leave", function (evt) {
+rtc.client.on("peer-leave", function (evt) {
   let stream = evt.stream;
   let streamId = String(stream.getId());
   stream.close();

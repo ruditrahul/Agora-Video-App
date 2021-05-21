@@ -3,38 +3,41 @@
 }
 
 body {
-  background-color: #faf3f3;
+  background-color: whitesmoke;
 }
 
 .navbar {
-  background-color: whitesmoke !important;
+  background-color: #1976d2 !important;
+  color: whitesmoke;
 }
 
 .navbar-brand {
   margin: 10px 20px;
   margin-left: 4%;
+  color: whitesmoke !important;
 }
 .navbar-nav {
   width: 35%;
   justify-content: space-between;
   margin-right: 5%;
+  color: whitesmoke !important;
 }
-
-.navbar-brand {
-  background-color: whitesmoke;
+.nav-item > a {
+  color: whitesmoke !important;
 }
 
 .container-fluid-body {
   height: 90vh;
   margin: 1rem 3rem;
   display: flex;
-  border: 2px solid black;
+  border: 2px solid #1976d2;
   border-radius: 10px;
 }
 h1,
 h4 {
   text-align: center;
   margin-top: 1rem;
+  color: #1976d2;
 }
 #remote-container video {
   max-height: 85vh;
@@ -44,6 +47,7 @@ h4 {
 #me {
   width: 15%;
   height: 25vh;
+  margin-left: 3px;
 }
 #remote-container {
   display: flex;
@@ -55,6 +59,7 @@ h4 {
 button {
   margin: 1rem;
   border: none;
+  color: #1976d2 !important;
 }
 
 @media only screen and (min-width: 200px) and (max-width: 768px) {
