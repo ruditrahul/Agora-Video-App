@@ -41,7 +41,7 @@ var rtc = {
 
 var options = {
   // Pass your app ID here.
-  appId: "06feb427bbde4e47a5105694ed767962",
+  appId: "75a3c7b0fcf54641bd174af5fa47b80e",
   // Set the channel name.
   channel: "myChannel",
   // Pass a token if your project enables the App Certificate.
@@ -54,7 +54,7 @@ rtc.client = AgoraRTC.createClient({
 });
 
 rtc.client.init(
-  "06feb427bbde4e47a5105694ed767962",
+  "2ae85a1c8495464a9709816a5c5134b2",
   function () {
     console.log("client initialized");
   },
@@ -65,7 +65,7 @@ rtc.client.init(
 
 // Join a channel
 rtc.client.join(
-  "00606feb427bbde4e47a5105694ed767962IAAHhNTRtrCTpl7F2+z7xR5TFOvXCSym8MLfEpcvth5OKEOQEggAAAAAEABpDq0k6vSoYAEAAQDq9Khg",
+  "0062ae85a1c8495464a9709816a5c5134b2IAB3t/+zbP6P+eFxYsld6pylWCx2If/s+7Ez2cLCmXDI3EOQEggAAAAAEAA7EFxElOmtYAEAAQCU6a1g",
   "myChannel",
   null,
   (uid) => {
